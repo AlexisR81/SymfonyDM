@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!
+{% endblock %}
+
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5;
+			font-family:Arial;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+		li{
+			list-style-type: none;
+		}
+	</style>
+
+	<div class="example-wrapper">
+		<h1>Dm To do List</h1>
+		<select id="select">
+            <option value="all">Toute</option>
+            <option value="fait">Fait</option>
+            <option value="nonfait">Non Fait</option>
+        </select>
+		<ul>
+			<a href="{{ path('app_todo_new') }}">
+				<li>Ajouter une todo</li>
+			</a>
+		</ul>
+
+		<table class='todo-table'>
+			<thead>
+				<tr>
+					<th>Titre</th>
+					<th>Etat</th>
+					<th>Modifier</th>
+					<th>Supprimer</th>
+				</tr>
+			</thead>
+			    <tbody id="todoTableBody">
+					{% for todo in todos %}
+						<tr>
+							<td>{{ todo.title }}</td>
+							<td>{{ todo.isChecked ? "✅" : "❌"}}</td>
+							<td>
+								<a href="{{ path('app_todo_edit', {'id': todo.id}) }}">
+									Éditer
+								</a>
+							</td>
+							<td>
+								        {% include 'todo/_delete_form.html.twig' %}
+							</td>
+						</tr>
+					{% endfor %}
+					</tbody>				
+            </table>
+                <script>
+				document.addEventListener("DOMContentLoaded", function () {
+					const filtre = document.querySelector("#select"); // Récupérer le <select>
+					const lignes = document.querySelectorAll("#todoTableBody tr"); // Toutes les lignes du tableau
+
+					filtre.addEventListener("change", function () {
+						const valeurFiltre = this.value; // Récupérer la valeur sélectionnée
+
+						lignes.forEach(ligne => {
+							const statut = ligne.querySelector("td:nth-child(2)").textContent.trim(); // Statut (✅ ou ❌)
+
+							if (valeurFiltre === "all") {
+								ligne.style.display = ""; // Afficher tout
+							} else if (valeurFiltre === "fait" && statut === "✅") {
+								ligne.style.display = ""; // Montrer les faits
+							} else if (valeurFiltre === "nonfait" && statut === "❌") {
+								ligne.style.display = ""; // Montrer les non-faits
+							} else {
+								ligne.style.display = "none"; // Cacher le reste
+							}
+						});
+					});
+				});
+				</script>
+
+            
+	</div>
+{% endblock %}
