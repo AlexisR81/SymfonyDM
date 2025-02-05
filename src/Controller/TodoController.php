@@ -24,17 +24,8 @@ class TodoController extends AbstractController
      */
     public function index(Request $request, TodoRepository $todoRepository): Response
 {
-    $filter = $request->query->get('filter', 'all');
-
-    if ($filter === "fait") {
-        $todos = $todoRepository->findBy(['checked' => true]);
-    } elseif ($filter === "nonfait") {
-        $todos = $todoRepository->findBy(['checked' => false]);
-    } else {
-        $todos = $todoRepository->findAll();
-    }
-
-   
+    $todos = $todoRepository->findAll();
+    
     // Sinon, on affiche la page complète
     return $this->render('todo/index.html.twig', [
         'todos' => $todos,
