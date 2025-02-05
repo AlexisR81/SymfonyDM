@@ -111,4 +111,9 @@ class Todo
 
         return $this;
     }
+
+    public function __toString(): string
+{
+    return $this->title; // Ou une autre propriété représentative
+}
 }

@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Todo;
 use App\Form\TodoType;
+use App\Repository\CategoryRepository;
 use App\Repository\TodoRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,18 +19,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class TodoController extends AbstractController
 {
    
-
-
     /**
      * @Route("/", name="app_todo_index", methods={"GET"})
      */
-    public function index(Request $request, TodoRepository $todoRepository): Response
+    public function index(Request $request, TodoRepository $todoRepository, UserRepository $userRepository, CategoryRepository $categoryRepository): Response
 {
     $todos = $todoRepository->findAll();
+    $users = $userRepository->findAll();
+    $categories = $categoryRepository->findAll();
     
     // Sinon, on affiche la page complète
     return $this->render('todo/index.html.twig', [
         'todos' => $todos,
+        'users' => $users,
+        'categories' => $categories,
     ]);
 }
 

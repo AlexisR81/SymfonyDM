@@ -39,6 +39,8 @@
 				<tr>
 					<th>Titre</th>
 					<th>Etat</th>
+					<th>Utilisateur Affilié</th>
+					<th>Category Associé</th>
 					<th>Modifier</th>
 					<th>Supprimer</th>
 				</tr>
@@ -49,17 +51,104 @@
 							<td>{{ todo.title }}</td>
 							<td>{{ todo.isChecked ? "✅" : "❌"}}</td>
 							<td>
+                    {% if todo.users is not empty %}
+                        <ul>
+                            {% for user in todo.users %}
+                                <li>{{ user.firstname }} {{ user.lastname }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        Aucun utilisateur assigné
+                    {% endif %}
+					</td>
+					<td>
+					{% if todo.category is not empty %}
+                        {{ todo.category.name}}                         
+                    {% else %}
+                        Aucune categories assigné
+                    {% endif %}
+                </td>
+							<td>
 								<a href="{{ path('app_todo_edit', {'id': todo.id}) }}">
 									Éditer
 								</a>
 							</td>
 							<td>
-								        {% include 'todo/_delete_form.html.twig' %}
+								{% include 'todo/_delete_form.html.twig' %}
 							</td>
 						</tr>
 					{% endfor %}
 					</tbody>				
             </table>
+			</div>
+			<div class="example-wrapper">
+
+    <h1>User index</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Phone</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.phone }}</td>
+                <td>
+                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
+                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_new') }}">Create new</a>
+    </div>
+	<div class="example-wrapper">
+    <h1>Category index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+            <tr>
+                <td>{{ category.id }}</td>
+                <td>{{ category.name }}</td>
+                <td>{{ category.description }}</td>
+                <td>
+                    <a href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
+                    <a href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_category_new') }}">Create new</a>
+    </div>
                 <script>
 				document.addEventListener("DOMContentLoaded", function () {
 					const filtre = document.querySelector("#select"); // Récupérer le <select>
@@ -85,6 +174,4 @@
 				});
 				</script>
 
-            
-	</div>
 {% endblock %}

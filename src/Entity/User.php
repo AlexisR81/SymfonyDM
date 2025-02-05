@@ -35,7 +35,7 @@ class User
     private $phone;
 
     /**
-     * @ORM\ManyToMany(targetEntity=todo::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Todo::class, inversedBy="users")
      */
     private $todos;
 
@@ -86,14 +86,14 @@ class User
     }
 
     /**
-     * @return Collection<int, todo>
+     * @return Collection<int, Todo>
      */
     public function getTodos(): Collection
     {
         return $this->todos;
     }
 
-    public function addTodo(todo $todo): self
+    public function addTodo(Todo $todo): self
     {
         if (!$this->todos->contains($todo)) {
             $this->todos[] = $todo;
@@ -102,7 +102,7 @@ class User
         return $this;
     }
 
-    public function removeTodo(todo $todo): self
+    public function removeTodo(Todo $todo): self
     {
         $this->todos->removeElement($todo);
 
